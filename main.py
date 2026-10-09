@@ -9,21 +9,28 @@ class Employee:
         self.salary = salary
         new_employee_record = {"id": id, "name": self.name, "job_title": self.job_title, "category": self.category, "bank_name": self.bank_name, "account_number": self.account_number, "salary": salary}
         employee_records.append(new_employee_record)
+
+    def calculate_salary(self, bonus):
+        self.gross_salary = self.salary + bonus
     
-    
-    
-    
-        
-class FullTImeEmployee(Employee):
     def apply_taxes(self):
-        return self.salary - (0.3 * self.salary)
+        return self.gross_salary - (0.3 * self.gross_salary)
+    
+class FullTImeEmployee(Employee):
+    pass
 
 
 class ContractEmployee(Employee):
-    pass
+    def calculate_salary(self):
+        self.gross_salary = self.salary
+        return self.gross_salary
 
 class Intern(Employee):
-    pass
+        
+    def calculate_salary(self):
+        self.gross_salary = self.salary
+    def apply_taxes(self):
+        return self.salary
     
 
 
@@ -43,16 +50,34 @@ def add_new_employee():
     
     if category == "1":
         new_employee = FullTImeEmployee(name, job_title, category, bank_name, account_number, salary, id)
-        print(new_employee.apply_taxes())
+        
     elif category == "2":
         new_employee = ContractEmployee(name, job_title, category, bank_name, account_number, salary, id)
     else:
         new_employee = Intern(name, job_title, category, bank_name, account_number, salary, id)
+    employee_payroll_data[id] = new_employee
+
+def generate_payslip():
+    employee_id = int(input("Kindly enter the id of the employee"))
+    
+    if employee_id in employee_payroll_data:
+        print(employee_payroll_data[employee_id].calculate_salary())
+    
+"""
+Get user input of the employee ID and bonus -> Search the employee records using ID -> Run that objects method for calculating the salary -> Run the apply taxes method -> Update the payroll data dictionary -> Generate payslip from 
+For apply taxes: full time will get 30% applied 
+
+
+"""
 
 
 employee_records = []
+employee_payroll_data = {}
 while True:
     add_new_employee()
+    generate_payslip()
+
+
 
 
 
