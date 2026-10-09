@@ -7,11 +7,17 @@ class Employee:
         self.bank_name = bank_name
         self.account_number = account_number
         self.salary = salary
-        new_employee_record = {"id": id, "name": self.name, "job_title": self.job_title, "category": self.category, "bank_name": self.bank_name, "account_number": self.account_number, "salary": salary}
+        new_employee_record = {"id": id, "name": self.name, 
+                               "job_title": self.job_title, 
+                               "category": self.category, 
+                               "bank_name": self.bank_name, 
+                               "account_number": self.account_number, 
+                               "salary": salary}
         employee_records.append(new_employee_record)
 
     def calculate_salary(self, bonus):
         self.gross_salary = self.salary + bonus
+        return self.gross_salary
     
     def apply_taxes(self):
         return self.gross_salary - (0.3 * self.gross_salary)
@@ -29,6 +35,7 @@ class Intern(Employee):
         
     def calculate_salary(self):
         self.gross_salary = self.salary
+        return self.gross_salary
     def apply_taxes(self):
         return self.salary
     
@@ -61,13 +68,40 @@ def generate_payslip():
     employee_id = int(input("Kindly enter the id of the employee"))
     
     if employee_id in employee_payroll_data:
-        print(employee_payroll_data[employee_id].calculate_salary())
+        if isinstance(employee_payroll_data[employee_id], FullTImeEmployee):
+            gross_salary = employee_payroll_data[employee_id].calculate_salary(500)
+        else:
+            gross_salary = employee_payroll_data[employee_id].calculate_salary()
+        net_salary = employee_payroll_data[employee_id].apply_taxes()
+    
+    print("|===============================|\n"
+         f"|           PAYSLIP             |\n"
+         f"|Name:{employee_payroll_data[employee_id].name} |\n"
+         f"|Job Title: {employee_payroll_data[employee_id].job_title} |\n"
+         f"|Job Title: {employee_payroll_data[employee_id].category} |\n"
+          "| Gross Salary   |  Net Salary  |\n"
+         f"| {gross_salary} | {net_salary} |"
+          )
+    
+def generate_all_payslips():
+    for employee in employee_payroll_data:
+        if isinstance(employee_payroll_data[employee], FullTImeEmployee):
+            gross_salary = employee_payroll_data[employee].calculate_salary(500)
+        else:
+            gross_salary = employee_payroll_data[employee].calculate_salary()
+        net_salary = employee_payroll_data[employee].apply_taxes()  
+        print("|===============================|\n"
+            f"|           PAYSLIP             |\n"
+            f"|Name:{employee_payroll_data[employee].name} |\n"
+            f"|Job Title: {employee_payroll_data[employee].job_title} |\n"
+            f"|Job Title: {employee_payroll_data[employee].category} |\n"
+            "| Gross Salary   |  Net Salary  |\n"
+            f"| {gross_salary} | {net_salary} |\n\n"
+            )
     
 """
 Get user input of the employee ID and bonus -> Search the employee records using ID -> Run that objects method for calculating the salary -> Run the apply taxes method -> Update the payroll data dictionary -> Generate payslip from 
 For apply taxes: full time will get 30% applied 
-
-
 """
 
 
@@ -75,7 +109,7 @@ employee_records = []
 employee_payroll_data = {}
 while True:
     add_new_employee()
-    generate_payslip()
+    generate_all_payslips()
 
 
 
