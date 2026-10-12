@@ -4,7 +4,6 @@ from utils import get_int
 
             
 
-    
 
 
 while True:
