@@ -14,21 +14,22 @@ class Employee:
         
     """
     
+    # You need to first use getters for the private variables, then use property so they can be accessed as properties, then modularise
     def __init__(self, name, job_title, category, 
                  bank_name, account_number, salary, id):
-        self.name = name
-        self.job_title = job_title
-        self.category = category
-        self.bank_name = bank_name
-        self.account_number = account_number
-        self.salary = salary
-        new_employee_record = {"id": id, "name": self.name, 
-                               "job_title": self.job_title, 
-                               "category": self.category, 
-                               "bank_name": self.bank_name, 
-                               "account_number": self.account_number, 
-                               "salary": salary}
-        employee_records.append(new_employee_record)
+        self._name = name
+        self._job_title = job_title
+        self._category = category
+        self._bank_name = bank_name
+        self._account_number = account_number
+        self._salary = salary
+        # new_employee_record = {"id": id, "name": self.name, 
+        #                        "job_title": self.job_title, 
+        #                        "category": self.category, 
+        #                        "bank_name": self.bank_name, 
+        #                        "account_number": self.account_number, 
+        #                        "salary": salary}
+        # employee_records.append(new_employee_record)
 
     def calculate_salary(self, bonus):
         """Calculate the employee's gross salary.
@@ -39,7 +40,7 @@ class Employee:
         Returns:
             int: The employee's gross salary before deductions.
         """
-        self.gross_salary = self.salary + bonus
+        self.gross_salary = self._salary + bonus
         return self.gross_salary
     
     def apply_taxes(self):
@@ -71,7 +72,7 @@ class ContractEmployee(Employee):
         Returns:
             int: The employee's base salary before deductions.
         """
-        self.gross_salary = self.salary
+        self.gross_salary = self._salary
         return self.gross_salary
 
 class Intern(Employee):
@@ -86,7 +87,7 @@ class Intern(Employee):
         Returns:
             int: The intern's base salary before deductions.
         """
-        self.gross_salary = self.salary
+        self.gross_salary = self._salary
         return self.gross_salary
     def apply_taxes(self):
         """Return the intern's salary without tax deductions.
@@ -94,7 +95,7 @@ class Intern(Employee):
         Returns:
             int: The intern's base salary.
         """
-        return self.salary
+        return self._salary
     
 
 
@@ -116,7 +117,7 @@ def add_new_employee():
     bank_name = input("Enter bank name:")
     account_number = input("Enter bank account number:")
     salary = int(input("What is the employee's salary in Rwf:"))
-    id = len(employee_records)
+    id = len(employee_payroll_data)
     
     if category == "1":
         new_employee = FullTImeEmployee(name, job_title, category, bank_name, account_number, salary, id)
@@ -144,9 +145,9 @@ def generate_payslip():
     
     print("|===============================|\n"
          f"|           PAYSLIP             |\n"
-         f"|Name:{employee_payroll_data[employee_id].name} |\n"
-         f"|Job Title: {employee_payroll_data[employee_id].job_title} |\n"
-         f"|Job Title: {employee_payroll_data[employee_id].category} |\n"
+         f"|Name:{employee_payroll_data[employee_id]._name} |\n"
+         f"|Job Title: {employee_payroll_data[employee_id]._job_title} |\n"
+         f"|Job Title: {employee_payroll_data[employee_id]._category} |\n"
           "| Gross Salary   |  Net Salary  |\n"
          f"| {gross_salary} | {net_salary} |"
           )
@@ -165,16 +166,16 @@ def generate_all_payslips():
         net_salary = employee_payroll_data[employee].apply_taxes()  
         print("|===============================|\n"
             f"|           PAYSLIP             |\n"
-            f"|Name:{employee_payroll_data[employee].name} |\n"
-            f"|Job Title: {employee_payroll_data[employee].job_title} |\n"
-            f"|Job Title: {employee_payroll_data[employee].category} |\n"
+            f"|Name:{employee_payroll_data[employee]._name} |\n"
+            f"|Job Title: {employee_payroll_data[employee]._job_title} |\n"
+            f"|Job Title: {employee_payroll_data[employee]._category} |\n"
             "| Gross Salary   |  Net Salary  |\n"
             f"| {gross_salary} | {net_salary} |\n\n"
             )
     
 
 
-employee_records = []
+# employee_records = []
 employee_payroll_data = {}
 while True:
     add_new_employee()
